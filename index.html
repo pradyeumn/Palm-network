@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hello, world.</title>
+  <style>
+    :root {
+      --ink: #17251f;
+      --muted: #5d6e65;
+      --paper: #f5f2e9;
+      --leaf: #bddf87;
+      --coral: #ef765f;
+      --line: rgba(23, 37, 31, 0.14);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 80% 12%, rgba(239, 118, 95, 0.3), transparent 24rem),
+        linear-gradient(135deg, #f5f2e9 0%, #e9f0d9 100%);
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: 28px clamp(22px, 5vw, 76px) 24px;
+    }
+
+    header, footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .mark { font-weight: 700; }
+    .status { color: var(--muted); }
+    .status::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: var(--coral);
+      box-shadow: 0 0 0 5px rgba(239, 118, 95, 0.15);
+    }
+
+    main {
+      display: grid;
+      place-items: center;
+      padding: 7vh 0 9vh;
+    }
+
+    .hero {
+      width: min(920px, 100%);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 170px;
+      gap: clamp(30px, 8vw, 120px);
+      align-items: end;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--coral);
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 700px;
+      margin: 0;
+      font-size: clamp(4rem, 11vw, 9.5rem);
+      line-height: 0.82;
+      letter-spacing: -0.06em;
+      font-weight: 400;
+    }
+
+    h1 span { color: var(--coral); }
+
+    .intro {
+      max-width: 430px;
+      margin: 34px 0 0;
+      color: var(--muted);
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .interaction {
+      display: grid;
+      gap: 14px;
+      padding-bottom: 4px;
+    }
+
+    label {
+      color: var(--muted);
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    input {
+      width: 100%;
+      border: 0;
+      border-bottom: 2px solid var(--ink);
+      padding: 10px 0;
+      color: var(--ink);
+      outline: none;
+      background: transparent;
+      font: 1.15rem Georgia, serif;
+    }
+
+    input:focus { border-color: var(--coral); }
+
+    button {
+      border: 0;
+      padding: 14px 18px;
+      cursor: pointer;
+      color: var(--ink);
+      background: var(--leaf);
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: transform 180ms ease, background 180ms ease;
+    }
+
+    button:hover { transform: translateY(-3px) rotate(-1deg); background: #cce99b; }
+    button:focus-visible { outline: 3px solid var(--coral); outline-offset: 4px; }
+
+    footer { color: var(--muted); }
+    footer span:last-child { text-align: right; }
+
+    @media (max-width: 680px) {
+      .page { padding-top: 22px; }
+      .hero { grid-template-columns: 1fr; align-items: start; }
+      main { padding: 10vh 0; }
+      .interaction { max-width: 300px; }
+      footer { gap: 20px; align-items: end; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="mark">Palm / 001</div>
+      <div class="status">A tiny web moment</div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="greeting">
+        <div>
+          <p class="eyebrow">The first thing on the page</p>
+          <h1 id="greeting">Hello,<br /><span>world.</span></h1>
+          <p class="intro">A small, bright corner of the internet. Enter your name and make the greeting yours.</p>
+        </div>
+
+        <form class="interaction" id="greeting-form">
+          <label for="name">Your name</label>
+          <input id="name" name="name" type="text" placeholder="Ada" autocomplete="given-name" />
+          <button type="submit">Say hello</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <span>Made with curiosity</span>
+      <span id="date"></span>
+    </footer>
+  </div>
+
+  <script>
+    const form = document.querySelector('#greeting-form');
+    const nameInput = document.querySelector('#name');
+    const greeting = document.querySelector('#greeting');
+    const date = document.querySelector('#date');
+
+    date.textContent = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' }).format(new Date());
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = nameInput.value.trim();
+      greeting.innerHTML = name ? `Hello,<br /><span>${escapeHtml(name)}.</span>` : 'Hello,<br /><span>world.</span>';
+      nameInput.value = '';
+      nameInput.placeholder = name ? 'Anyone else?' : 'Ada';
+    });
+
+    function escapeHtml(value) {
+      return value.replace(/[&<>'"]/g, (character) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      })[character]);
+    }
+  </script>
+</body>
+</html>
